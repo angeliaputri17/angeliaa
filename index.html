@@ -15,22 +15,36 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
             background-color: #000;
+            overflow: hidden; /* Mencegah scroll default browser */
         }
 
-        .container {
-            position: relative;
+        /* WADAH UTAMA SNAP SCROLL (3 HALAMAN) */
+        .main-wrapper {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             max-width: 450px;
             margin: 0 auto;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; /* Efek membal pas ke halaman berikutnya */
+            scroll-behavior: smooth;
+        }
+
+        /* STRUKTUR TIAP HALAMAN (PAGE) */
+        .page {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: #000;
         }
 
+        /* BACKGROUND VIDEO & SHIELD */
         .video-background {
             position: absolute;
             top: 0;
@@ -57,19 +71,26 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.2);
         }
 
+        /* KONTEN HALAMAN */
         .content {
             position: relative;
             z-index: 3;
             width: 100%;
             height: 100%;
-            padding: 35px 25px 90px 25px; /* Bottom padding ditingkatkan agar ada ruang untuk sticker & music icon */
+            padding: 30px 20px 80px 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Membuat konten terdistribusi otomatis di layar pendek/tinggi */
+            justify-content: space-between;
             align-items: center;
+            overflow-y: auto; /* Memungkinkan isi halaman dimuat dengan rapi */
+        }
+
+        /* Hide scrollbar untuk konten internal */
+        .content::-webkit-scrollbar {
+            display: none;
         }
 
         .header-container {
@@ -77,14 +98,15 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 5px;
             background: transparent;
         }
 
-        .title-top, .title-bottom {
-            font-size: 2.3rem;
+        /* GAYA FONT JUDUL & SUBJUDUL DIBUAT SAMA */
+        .title-top, .title-bottom, .sub-title-styled {
+            font-size: 2.1rem;
             font-weight: 900; 
-            line-height: 1.1;
+            line-height: 1.15;
             letter-spacing: -0.5px;
             background-image: url('kupu.gif'); 
             background-size: 80px auto; 
@@ -94,10 +116,10 @@
             -webkit-background-clip: text;
             color: transparent; 
             filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.9));
+            text-align: center;
         }
 
         .title-top {
-            text-align: center;
             width: 100%;
         }
 
@@ -130,12 +152,13 @@
             object-fit: contain;
         }
 
+        /* BUTTON GROUP HALAMAN 1 */
         .button-group {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 14px;
-            margin-top: auto; /* Menggeser grup tombol ke bawah secara fleksibel */
+            margin-top: auto;
             margin-bottom: 10px;
         }
 
@@ -198,8 +221,8 @@
             background: radial-gradient(circle, rgba(46, 204, 113, 0.4) 0%, rgba(39, 174, 96, 0.05) 70%);
         }
 
-        .btn-tiktok::before {
-            background: radial-gradient(circle, rgba(0, 242, 234, 0.45) 0%, rgba(254, 44, 85, 0.05) 70%);
+        .btn-instagram::before {
+            background: radial-gradient(circle, rgba(225, 48, 108, 0.45) 0%, rgba(253, 29, 29, 0.1) 50%, rgba(252, 175, 69, 0.05) 70%);
         }
 
         .btn:hover::before {
@@ -208,21 +231,158 @@
             opacity: 1;
         }
 
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.22);
-            border-color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+        /* ========================================================
+           DESAIN KHUSUS HALAMAN 2 (KATALOG CHALLENGE)
+           ======================================================== */
+        .catalog-container {
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* STICKER POJOK KANAN BAWAH */
+        /* Grid 3 Kotak Atas */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Grid 2 Kotak Bawah */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .card-box {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            padding: 8px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .card-box:active {
+            transform: scale(0.97);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-text {
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            line-height: 1.2;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* SUBJUDUL BEST MOMENT */
+        .sub-title-styled {
+            font-size: 1.5rem;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            width: 100%;
+            display: block;
+        }
+
+        /* KOTAK SPESIAL VIDEO DI BAWAH */
+        .best-photo-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 10px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .best-photo-img {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========================================================
+           DESAIN KHUSUS HALAMAN 3 (ABOUT ME & GALLERY)
+           ======================================================== */
+        .page-3-content {
+            justify-content: flex-start !important;
+        }
+
+        .page-3-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 22px 20px;
+            color: #fff;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            margin-top: 260px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-3-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .page-3-box p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #ddd;
+        }
+
+        /* ELEMEN MELAYANG/FIXED DI LUAR SCROLL */
+        .fixed-elements {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
         .bottom-right-sticker {
             position: absolute;
             bottom: 15px;
             right: 15px;
-            width: 80px;  /* Ukuran disesuaikan agar tidak memakan terlalu banyak tempat */
+            width: 80px;
             height: 80px;
-            z-index: 10;
             pointer-events: auto;
             cursor: pointer;
             filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
@@ -239,7 +399,6 @@
             object-fit: contain;
         }
 
-        /* TOMBOL MUTE / UNMUTE BGM DI POJOK KIRI BAWAH */
         .music-toggle {
             position: absolute;
             bottom: 15px;
@@ -255,30 +414,67 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            z-index: 10;
+            pointer-events: auto;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* OPTIMASI KHUSUS LAYAR HP SANGAT PENDEK (< 650px) */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            animation: bounce 1.8s infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator span {
+            font-size: 16px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -8px); }
+            60% { transform: translate(-50%, -4px); }
+        }
+
+        /* OPTIMASI HP LAYAR PENDEK (< 650px) */
         @media (max-height: 650px) {
             .content {
-                padding: 20px 20px 75px 20px;
+                padding: 15px 15px 70px 15px;
             }
             .title-top, .title-bottom {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
+            }
+            .sub-title-styled {
+                font-size: 1.25rem;
             }
             .header-cakar {
-                width: 45px;
-                height: 45px;
-            }
-            .button-group {
-                gap: 10px;
+                width: 40px;
+                height: 40px;
             }
             .btn {
                 padding: 11px 16px;
-                font-size: 0.98rem;
+                font-size: 0.95rem;
+            }
+            .card-img {
+                height: 55px;
+            }
+            .card-text {
+                font-size: 0.65rem;
+            }
+            .best-photo-img {
+                height: 100px;
+            }
+            .page-3-box {
+                margin-top: 170px;
             }
             .bottom-right-sticker {
                 width: 65px;
@@ -357,56 +553,153 @@
 </head>
 <body>
 
-    <!-- ELEMENT AUDIO BACKGROUND MUSIC -->
+    <!-- AUDIO BACKGROUND MUSIC -->
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="container">
+    <!-- WADAH SCROLL UTAMA -->
+    <div class="main-wrapper" id="mainWrapper">
         
-        <div class="video-background">
-            <video autoplay muted loop playsinline id="bgVideo">
-                <source src="background.mp4" type="video/mp4">
-            </video>
-        </div>
+        <!-- HALAMAN 1 -->
+        <section class="page" id="page1">
+            <div class="video-background">
+                <video autoplay muted loop playsinline id="bgVideo1">
+                    <source src="background.mp4" type="video/mp4">
+                </video>
+            </div>
 
-        <div class="video-shield"></div>
+            <div class="video-shield"></div>
 
-        <div class="content">
-            
-            <div class="header-container">
-                <h1 class="title-top">Support Little</h1>
-                <div class="title-bottom-wrapper">
-                    <span class="title-bottom">Angel Here</span>
-                    <div class="header-cakar">
-                        <img src="cakar.gif" alt="Cat Paw">
+            <div class="content">
+                <div class="header-container">
+                    <h1 class="title-top">Support Little</h1>
+                    <div class="title-bottom-wrapper">
+                        <span class="title-bottom">Angel Here</span>
+                        <div class="header-cakar">
+                            <img src="cakar.gif" alt="Cat Paw">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <a href="https://bagibagi.co/angeliaputri" class="btn btn-gold" target="_blank">
+                        <img src="logo-bagibagi.png" alt="Icon"> <span>Bagi Bagi</span>
+                    </a>
+                    
+                    <a href="https://sociabuzz.com/angeliaputri_/tribe?" class="btn btn-green" target="_blank">
+                        <img src="logo-sociabuzz.png" alt="Icon"> <span>Sociabuzz</span>
+                    </a>
+
+                    <a href="https://www.instagram.com/angeliaaputriii_?cplk=aDB2cnM1NGZhcWQw&utm_source=qr" class="btn btn-instagram" target="_blank">
+                        <img src="logo-instagram.png" alt="Icon"> <span>Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 2: MOST POPULAR HOST CHALLENGE -->
+        <section class="page" id="page2">
+            <div class="video-background">
+                <video autoplay muted loop playsinline id="bgVideo2">
+                    <source src="background2.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="video-shield"></div>
+
+            <div class="content">
+                <div class="header-container">
+                    <h1 class="title-top" style="font-size: 1.8rem; line-height: 1.2;">Most Popular</h1>
+                    <div class="title-bottom-wrapper" style="padding-left: 0;">
+                        <span class="title-bottom" style="font-size: 1.8rem;">Host Challenge</span>
+                    </div>
+                </div>
+
+                <!-- KATALOG 5 KOTAK -->
+                <div class="catalog-container">
+                    <!-- Baris 1: 3 Kotak -->
+                    <div class="grid-3">
+                        <div class="card-box">
+                            <img src="host1.jpg" alt="Host Challenge 1" class="card-img">
+                            <span class="card-text">Challenge Dot</span>
+                        </div>
+                        <div class="card-box">
+                            <img src="host2.jpg" alt="Host Challenge 2" class="card-img">
+                            <span class="card-text">Challenge Hormat</span>
+                        </div>
+                        <div class="card-box">
+                            <img src="host3.jpg" alt="Host Challenge 3" class="card-img">
+                            <span class="card-text">Challenge Bedak</span>
+                        </div>
+                    </div>
+
+                    <!-- Baris 2: 2 Kotak -->
+                    <div class="grid-2">
+                        <div class="card-box">
+                            <img src="host4.jpg" alt="Host Challenge 4" class="card-img">
+                            <span class="card-text">Cosplay</span>
+                        </div>
+                        <div class="card-box">
+                            <img src="host5.jpg" alt="Host Challenge 5" class="card-img">
+                            <span class="card-text">Full hairclip</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBJUDUL DENGAN FONT YANG SAMA & VIDEO BEST MOMENT -->
+                <div style="width: 100%;">
+                    <span class="sub-title-styled">Best Moment of This Month</span>
+                    <div class="best-photo-box">
+                        <video autoplay muted loop playsinline id="bestVideo" class="best-photo-img">
+                            <source src="best-video.mp4" type="video/mp4">
+                            Browser Anda tidak mendukung tag video.
+                        </video>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="button-group">
-                <a href="https://bagibagi.co/angeliaputri" class="btn btn-gold" target="_blank">
-                    <img src="logo-bagibagi.png" alt="Icon"> <span>Bagi Bagi</span>
-                </a>
-                
-                <a href="https://sociabuzz.com/angeliaputri_/tribe?" class="btn btn-green" target="_blank">
-                    <img src="logo-sociabuzz.png" alt="Icon"> <span>Sociabuzz</span>
-                </a>
-
-                <a href="https://www.instagram.com/angeliaaputriii_?cplk=aDB2cnM1NGZhcWQw&utm_source=qr" class="btn btn-tiktok" target="_blank">
-                    <img src="logo-instagram.png" alt="Icon"> <span>Instagram</span>
-                </a>
+        <!-- HALAMAN 3: ABOUT ME & GALLERY -->
+        <section class="page" id="page3">
+            <div class="video-background">
+                <video autoplay muted loop playsinline id="bgVideo3">
+                    <source src="background3.mp4" type="video/mp4">
+                </video>
             </div>
-        </div>
 
-        <!-- TOMBOL MUTE/UNMUTE MUSIK DI KIRI BAWAH -->
+            <div class="video-shield"></div>
+
+            <div class="content page-3-content">
+                <div class="header-container">
+                    <h1 class="title-top"></h1>
+                    <div class="title-bottom-wrapper" style="padding-left: 0;">
+                        <span class="title-bottom"></span>
+                    </div>
+                </div>
+
+                <!-- KONTEN BOX HALAMAN 3 -->
+                <div class="page-3-box">
+                    <h2>Terima Kasih! ✨</h2>
+                    <p>Terima kasih banyak untuk kamu yang sudah memberikan dukungan. Setiap bentuk dukungan dari kalian sangat berarti! Stay tuned & let's be kind 💖</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ELEMEN MELAYANG / FIXED (STICKER, MUSIK, & PETUNJUK SCROLL) -->
+    <div class="fixed-elements">
         <div class="music-toggle" id="musicToggle">🎵</div>
 
-        <!-- STICKER POJOK KANAN BAWAH -->
+        <div class="scroll-indicator" id="scrollIndicator">
+            <span>Scroll ke bawah</span>
+            <span>▼</span>
+        </div>
+
         <div class="bottom-right-sticker" id="stickerBtn">
             <img src="cat2.gif" alt="Cute Cat">
         </div>
-
     </div>
 
     <!-- POP-UP MODAL VIDEO -->
@@ -421,8 +714,20 @@
     </div>
 
     <script>
-        var video = document.getElementById('bgVideo');
-        video.currentTime = 2;
+        var bgVideo1 = document.getElementById('bgVideo1');
+        var bgVideo2 = document.getElementById('bgVideo2');
+        var bgVideo3 = document.getElementById('bgVideo3');
+        var bestVideo = document.getElementById('bestVideo');
+
+        if (bgVideo1) bgVideo1.currentTime = 2;
+
+        function playVideos() {
+            if (bgVideo1 && bgVideo1.paused) bgVideo1.play();
+            if (bgVideo2 && bgVideo2.paused) bgVideo2.play();
+            if (bgVideo3 && bgVideo3.paused) bgVideo3.play();
+            if (bestVideo && bestVideo.paused) bestVideo.play();
+        }
+        window.addEventListener('load', playVideos);
 
         // --- LOGIKA BACKGROUND MUSIC ---
         const bgMusic = document.getElementById('bgMusic');
@@ -432,11 +737,12 @@
         bgMusic.volume = 0.5;
 
         function startMusicOnFirstInteraction() {
+            playVideos();
             if (!musicStarted) {
                 bgMusic.play().then(() => {
                     musicStarted = true;
                     musicToggle.textContent = '🎵';
-                }).catch(err => console.log("Autoplay diblokir browser: ", err));
+                }).catch(err => console.log("Autoplay diblokir: ", err));
             }
         }
 
@@ -451,6 +757,22 @@
             } else {
                 bgMusic.pause();
                 musicToggle.textContent = '🔇';
+            }
+        });
+
+        // --- LOGIKA SCROLL ---
+        const mainWrapper = document.getElementById('mainWrapper');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+
+        mainWrapper.addEventListener('scroll', function() {
+            playVideos();
+            
+            // Indikator scroll tetap tampil di Halaman 1 & 2, lalu tersembunyi saat tiba di Halaman 3 (paling bawah)
+            const pageHeight = window.innerHeight;
+            if (mainWrapper.scrollTop >= (pageHeight * 1.5)) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '1';
             }
         });
 
