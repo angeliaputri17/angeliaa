@@ -16,19 +16,21 @@
             width: 100%;
             height: 100%;
             background-color: #000;
-            overflow: hidden;
+            overflow: hidden; /* Mencegah scroll default browser */
         }
 
+        /* WADAH UTAMA SNAP SCROLL (3 HALAMAN) */
         .main-wrapper {
             width: 100%;
             height: 100vh;
             max-width: 450px;
             margin: 0 auto;
             overflow-y: scroll;
-            scroll-snap-type: y mandatory;
+            scroll-snap-type: y mandatory; /* Efek membal pas ke halaman berikutnya */
             scroll-behavior: smooth;
         }
 
+        /* STRUKTUR TIAP HALAMAN (PAGE) */
         .page {
             position: relative;
             width: 100%;
@@ -42,7 +44,7 @@
             background-color: #000;
         }
 
-        /* PERBAIKAN UTAMA UNTUK IPHONE: pointer-events: none */
+        /* BACKGROUND VIDEO & SHIELD */
         .video-background {
             position: absolute;
             top: 0;
@@ -50,7 +52,6 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            pointer-events: none !important; /* Membuat video tembus sentuhan di iOS/iPhone */
         }
 
         .video-background video {
@@ -61,8 +62,6 @@
             height: 100%;
             object-fit: cover;
             transform: translate(-50%, -50%);
-            pointer-events: none !important;
-            -webkit-user-select: none;
         }
 
         .video-shield {
@@ -73,9 +72,9 @@
             height: 100%;
             z-index: 2;
             background: rgba(0, 0, 0, 0.2);
-            pointer-events: none; /* Shield juga harus tembus sentuhan */
         }
 
+        /* KONTEN HALAMAN */
         .content {
             position: relative;
             z-index: 3;
@@ -86,9 +85,10 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            overflow-y: auto;
+            overflow-y: auto; /* Memungkinkan isi halaman dimuat dengan rapi */
         }
 
+        /* Hide scrollbar untuk konten internal */
         .content::-webkit-scrollbar {
             display: none;
         }
@@ -102,6 +102,7 @@
             background: transparent;
         }
 
+        /* GAYA FONT JUDUL & SUBJUDUL DIBUAT SAMA */
         .title-top, .title-bottom, .sub-title-styled {
             font-size: 2.1rem;
             font-weight: 900; 
@@ -151,6 +152,7 @@
             object-fit: contain;
         }
 
+        /* BUTTON GROUP HALAMAN 1 */
         .button-group {
             width: 100%;
             display: flex;
@@ -158,7 +160,6 @@
             gap: 14px;
             margin-top: auto;
             margin-bottom: 10px;
-            z-index: 5; /* Memastikan tombol berada di layer atas */
         }
 
         .btn {
@@ -181,7 +182,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden; 
             -webkit-tap-highlight-color: transparent;
-            z-index: 5;
+            z-index: 1;
         }
 
         .btn img {
@@ -230,15 +231,18 @@
             opacity: 1;
         }
 
+        /* ========================================================
+           DESAIN KHUSUS HALAMAN 2 (KATALOG CHALLENGE)
+           ======================================================== */
         .catalog-container {
             width: 100%;
             margin-top: 15px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 5;
         }
 
+        /* Grid 3 Kotak Atas */
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -246,6 +250,7 @@
             width: 100%;
         }
 
+        /* Grid 2 Kotak Bawah */
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -266,6 +271,11 @@
             align-items: center;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .card-box:active {
+            transform: scale(0.97);
         }
 
         .card-img {
@@ -289,6 +299,7 @@
             overflow: hidden;
         }
 
+        /* SUBJUDUL BEST MOMENT */
         .sub-title-styled {
             font-size: 1.5rem;
             margin-top: 15px;
@@ -297,6 +308,7 @@
             display: block;
         }
 
+        /* KOTAK SPESIAL VIDEO DI BAWAH */
         .best-photo-box {
             width: 100%;
             background: rgba(255, 255, 255, 0.15);
@@ -317,9 +329,11 @@
             border-radius: 12px;
             object-fit: cover;
             background: rgba(255, 255, 255, 0.1);
-            pointer-events: auto; /* Agar video di dalam box tetap bisa diputar jika diperlukan */
         }
 
+        /* ========================================================
+           DESAIN KHUSUS HALAMAN 3 (ABOUT ME & GALLERY)
+           ======================================================== */
         .page-3-content {
             justify-content: flex-start !important;
         }
@@ -335,7 +349,6 @@
             margin-top: 260px;
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 5;
         }
 
         .page-3-box h2 {
@@ -351,6 +364,7 @@
             color: #ddd;
         }
 
+        /* ELEMEN MELAYANG/FIXED DI LUAR SCROLL */
         .fixed-elements {
             position: fixed;
             top: 0;
@@ -431,6 +445,7 @@
             60% { transform: translate(-50%, -4px); }
         }
 
+        /* OPTIMASI HP LAYAR PENDEK (< 650px) */
         @media (max-height: 650px) {
             .content {
                 padding: 15px 15px 70px 15px;
@@ -476,6 +491,7 @@
             }
         }
 
+        /* POP-UP MODAL VIDEO */
         .video-modal {
             display: none;
             position: fixed;
@@ -537,12 +553,15 @@
 </head>
 <body>
 
+    <!-- AUDIO BACKGROUND MUSIC -->
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- WADAH SCROLL UTAMA -->
     <div class="main-wrapper" id="mainWrapper">
         
+        <!-- HALAMAN 1 -->
         <section class="page" id="page1">
             <div class="video-background">
                 <video autoplay muted loop playsinline id="bgVideo1">
@@ -579,10 +598,11 @@
             </div>
         </section>
 
+        <!-- HALAMAN 2: MOST POPULAR HOST CHALLENGE -->
         <section class="page" id="page2">
             <div class="video-background">
                 <video autoplay muted loop playsinline id="bgVideo2">
-                    <source src="background.mp4" type="video/mp4">
+                    <source src="background2.mp4" type="video/mp4">
                 </video>
             </div>
 
@@ -596,34 +616,38 @@
                     </div>
                 </div>
 
+                <!-- KATALOG 5 KOTAK -->
                 <div class="catalog-container">
+                    <!-- Baris 1: 3 Kotak -->
                     <div class="grid-3">
                         <div class="card-box">
                             <img src="host1.jpg" alt="Host Challenge 1" class="card-img">
-                            <span class="card-text">Challenge 1</span>
+                            <span class="card-text">Challenge Dot</span>
                         </div>
                         <div class="card-box">
                             <img src="host2.jpg" alt="Host Challenge 2" class="card-img">
-                            <span class="card-text">Challenge 2</span>
+                            <span class="card-text">Challenge Hormat</span>
                         </div>
                         <div class="card-box">
                             <img src="host3.jpg" alt="Host Challenge 3" class="card-img">
-                            <span class="card-text">Challenge 3</span>
+                            <span class="card-text">Challenge Bedak</span>
                         </div>
                     </div>
 
+                    <!-- Baris 2: 2 Kotak -->
                     <div class="grid-2">
                         <div class="card-box">
                             <img src="host4.jpg" alt="Host Challenge 4" class="card-img">
-                            <span class="card-text">Challenge 4</span>
+                            <span class="card-text">Cosplay</span>
                         </div>
                         <div class="card-box">
                             <img src="host5.jpg" alt="Host Challenge 5" class="card-img">
-                            <span class="card-text">Challenge 5</span>
+                            <span class="card-text">Full hairclip</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- SUBJUDUL DENGAN FONT YANG SAMA & VIDEO BEST MOMENT -->
                 <div style="width: 100%;">
                     <span class="sub-title-styled">Best Moment of This Month</span>
                     <div class="best-photo-box">
@@ -636,10 +660,11 @@
             </div>
         </section>
 
+        <!-- HALAMAN 3: ABOUT ME & GALLERY -->
         <section class="page" id="page3">
             <div class="video-background">
                 <video autoplay muted loop playsinline id="bgVideo3">
-                    <source src="background2.mp4" type="video/mp4">
+                    <source src="background3.mp4" type="video/mp4">
                 </video>
             </div>
 
@@ -653,6 +678,7 @@
                     </div>
                 </div>
 
+                <!-- KONTEN BOX HALAMAN 3 -->
                 <div class="page-3-box">
                     <h2>Terima Kasih! ✨</h2>
                     <p>Terima kasih banyak untuk kamu yang sudah memberikan dukungan. Setiap bentuk dukungan dari kalian sangat berarti! Stay tuned & let's be kind 💖</p>
@@ -662,6 +688,7 @@
 
     </div>
 
+    <!-- ELEMEN MELAYANG / FIXED (STICKER, MUSIK, & PETUNJUK SCROLL) -->
     <div class="fixed-elements">
         <div class="music-toggle" id="musicToggle">🎵</div>
 
@@ -675,6 +702,7 @@
         </div>
     </div>
 
+    <!-- POP-UP MODAL VIDEO -->
     <div class="video-modal" id="popupModal">
         <div class="modal-content">
             <span class="close-btn" id="closeModal">&times;</span>
@@ -701,6 +729,7 @@
         }
         window.addEventListener('load', playVideos);
 
+        // --- LOGIKA BACKGROUND MUSIC ---
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
         let musicStarted = false;
@@ -731,12 +760,14 @@
             }
         });
 
+        // --- LOGIKA SCROLL ---
         const mainWrapper = document.getElementById('mainWrapper');
         const scrollIndicator = document.getElementById('scrollIndicator');
 
         mainWrapper.addEventListener('scroll', function() {
             playVideos();
             
+            // Indikator scroll tetap tampil di Halaman 1 & 2, lalu tersembunyi saat tiba di Halaman 3 (paling bawah)
             const pageHeight = window.innerHeight;
             if (mainWrapper.scrollTop >= (pageHeight * 1.5)) {
                 scrollIndicator.style.opacity = '0';
@@ -745,6 +776,7 @@
             }
         });
 
+        // --- LOGIKA POP-UP VIDEO ---
         const stickerBtn = document.getElementById('stickerBtn');
         const popupModal = document.getElementById('popupModal');
         const closeModal = document.getElementById('closeModal');
