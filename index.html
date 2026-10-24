@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Little Angel Here</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+        }
+
+        .video-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            padding: 35px 25px 90px 25px; /* Bottom padding ditingkatkan agar ada ruang untuk sticker & music icon */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Membuat konten terdistribusi otomatis di layar pendek/tinggi */
+            align-items: center;
+        }
+
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 10px;
+            background: transparent;
+        }
+
+        .title-top, .title-bottom {
+            font-size: 2.3rem;
+            font-weight: 900; 
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            background-image: url('kupu.gif'); 
+            background-size: 80px auto; 
+            background-repeat: repeat;  
+            background-position: center center;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent; 
+            filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.9));
+        }
+
+        .title-top {
+            text-align: center;
+            width: 100%;
+        }
+
+        .title-bottom-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 60px; 
+            gap: 10px;
+            width: 100%;
+            margin-top: 5px;
+            background: transparent;
+        }
+
+        .title-bottom {
+            white-space: nowrap;
+        }
+
+        .header-cakar {
+            width: 55px;
+            height: 55px;
+            flex-shrink: 0;
+            pointer-events: none;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .header-cakar img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .button-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: auto; /* Menggeser grup tombol ke bawah secara fleksibel */
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.12); 
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+            -webkit-tap-highlight-color: transparent;
+            z-index: 1;
+        }
+
+        .btn img {
+            position: absolute;
+            left: 20px;
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            z-index: 5;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 5;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.6s ease-out, height 0.6s ease-out, opacity 0.6s ease-out;
+            z-index: 3;
+        }
+
+        .btn-gold::before {
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(218, 165, 32, 0.05) 70%);
+        }
+
+        .btn-green::before {
+            background: radial-gradient(circle, rgba(46, 204, 113, 0.4) 0%, rgba(39, 174, 96, 0.05) 70%);
+        }
+
+        .btn-tiktok::before {
+            background: radial-gradient(circle, rgba(0, 242, 234, 0.45) 0%, rgba(254, 44, 85, 0.05) 70%);
+        }
+
+        .btn:hover::before {
+            width: 140%; 
+            height: 350px;
+            opacity: 1;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+        }
+
+        /* STICKER POJOK KANAN BAWAH */
+        .bottom-right-sticker {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 80px;  /* Ukuran disesuaikan agar tidak memakan terlalu banyak tempat */
+            height: 80px;
+            z-index: 10;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
+            transition: transform 0.2s ease;
+        }
+
+        .bottom-right-sticker:active {
+            transform: scale(0.95);
+        }
+
+        .bottom-right-sticker img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* TOMBOL MUTE / UNMUTE BGM DI POJOK KIRI BAWAH */
+        .music-toggle {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            width: 38px;
+            height: 38px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* OPTIMASI KHUSUS LAYAR HP SANGAT PENDEK (< 650px) */
+        @media (max-height: 650px) {
+            .content {
+                padding: 20px 20px 75px 20px;
+            }
+            .title-top, .title-bottom {
+                font-size: 1.8rem;
+            }
+            .header-cakar {
+                width: 45px;
+                height: 45px;
+            }
+            .button-group {
+                gap: 10px;
+            }
+            .btn {
+                padding: 11px 16px;
+                font-size: 0.98rem;
+            }
+            .bottom-right-sticker {
+                width: 65px;
+                height: 65px;
+                bottom: 10px;
+                right: 10px;
+            }
+            .music-toggle {
+                width: 34px;
+                height: 34px;
+                bottom: 10px;
+                left: 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* POP-UP MODAL VIDEO */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content video {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 101;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ELEMENT AUDIO BACKGROUND MUSIC -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        
+        <div class="video-background">
+            <video autoplay muted loop playsinline id="bgVideo">
+                <source src="background.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="video-shield"></div>
+
+        <div class="content">
+            
+            <div class="header-container">
+                <h1 class="title-top">Support Little</h1>
+                <div class="title-bottom-wrapper">
+                    <span class="title-bottom">Angel Here</span>
+                    <div class="header-cakar">
+                        <img src="cakar.gif" alt="Cat Paw">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="https://bagibagi.co/angeliaputri" class="btn btn-gold" target="_blank">
+                    <img src="logo-bagibagi.png" alt="Icon"> <span>Bagi Bagi</span>
+                </a>
+                
+                <a href="https://sociabuzz.com/angeliaputri_/tribe?" class="btn btn-green" target="_blank">
+                    <img src="logo-sociabuzz.png" alt="Icon"> <span>Sociabuzz</span>
+                </a>
+
+                <a href="https://www.tiktok.com/@angeliaputri1717?lang=id-ID" class="btn btn-tiktok" target="_blank">
+                    <img src="logo-tiktok.png" alt="Icon"> <span>TikTok</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- TOMBOL MUTE/UNMUTE MUSIK DI KIRI BAWAH -->
+        <div class="music-toggle" id="musicToggle">🎵</div>
+
+        <!-- STICKER POJOK KANAN BAWAH -->
+        <div class="bottom-right-sticker" id="stickerBtn">
+            <img src="cat2.gif" alt="Cute Cat">
+        </div>
+
+    </div>
+
+    <!-- POP-UP MODAL VIDEO -->
+    <div class="video-modal" id="popupModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <video id="popupVideo" controls playsinline>
+                <source src="popup-video.mp4" type="video/mp4">
+                Browser Anda tidak mendukung tag video.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        var video = document.getElementById('bgVideo');
+        video.currentTime = 2;
+
+        // --- LOGIKA BACKGROUND MUSIC ---
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let musicStarted = false;
+
+        bgMusic.volume = 0.5;
+
+        function startMusicOnFirstInteraction() {
+            if (!musicStarted) {
+                bgMusic.play().then(() => {
+                    musicStarted = true;
+                    musicToggle.textContent = '🎵';
+                }).catch(err => console.log("Autoplay diblokir browser: ", err));
+            }
+        }
+
+        document.body.addEventListener('click', startMusicOnFirstInteraction, { once: true });
+        document.body.addEventListener('touchstart', startMusicOnFirstInteraction, { once: true });
+
+        musicToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.textContent = '🎵';
+            } else {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+            }
+        });
+
+        // --- LOGIKA POP-UP VIDEO ---
+        const stickerBtn = document.getElementById('stickerBtn');
+        const popupModal = document.getElementById('popupModal');
+        const closeModal = document.getElementById('closeModal');
+        const popupVideo = document.getElementById('popupVideo');
+
+        stickerBtn.addEventListener('click', function() {
+            if (!bgMusic.paused) {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+            }
+
+            popupModal.classList.add('active');
+            popupVideo.currentTime = 0;
+            popupVideo.play();
+        });
+
+        function hideModal() {
+            popupModal.classList.remove('active');
+            popupVideo.pause();
+
+            bgMusic.play();
+            musicToggle.textContent = '🎵';
+        }
+
+        closeModal.addEventListener('click', hideModal);
+
+        popupModal.addEventListener('click', function(e) {
+            if (e.target === popupModal) {
+                hideModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
